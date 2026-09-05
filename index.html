@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Teacher's Day — Prof. Sweta Agarwal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #FBF3E6;
+    --cream-deep: #F3E4CE;
+    --maroon: #7B2A2A;
+    --maroon-deep: #5A1E1E;
+    --gold: #C79A4B;
+    --gold-light: #E8C888;
+    --ink: #3B2B22;
+    --ink-soft: #6B564A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+  }
+  a{color:inherit;}
+
+  /* ---------- particle canvas ---------- */
+  #particles{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:0; pointer-events:none;
+  }
+
+  /* ---------- music toggle ---------- */
+  #musicToggle{
+    position:fixed; top:24px; right:24px; z-index:50;
+    width:56px; height:56px; border-radius:50%;
+    background:var(--maroon);
+    border:1px solid var(--gold-light);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 6px 20px rgba(90,30,30,0.35);
+    transition:transform .3s ease;
+  }
+  #musicToggle:hover{ transform:scale(1.08); }
+  #musicToggle svg{ width:22px; height:22px; fill:var(--gold-light); }
+  #musicToggle .bars{ display:flex; gap:3px; align-items:flex-end; height:18px; }
+  #musicToggle .bars span{
+    width:3px; background:var(--gold-light); border-radius:2px;
+    animation:eq 0.9s ease-in-out infinite;
+  }
+  #musicToggle .bars span:nth-child(1){height:6px; animation-delay:0s;}
+  #musicToggle .bars span:nth-child(2){height:14px; animation-delay:.15s;}
+  #musicToggle .bars span:nth-child(3){height:9px; animation-delay:.3s;}
+  #musicToggle.paused .bars span{ animation-play-state:paused; height:5px; }
+  @keyframes eq{ 0%,100%{height:5px;} 50%{height:16px;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; z-index:1;
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center;
+    padding:40px 24px;
+    perspective:1200px;
+  }
+  .hero .eyebrow{
+    font-size:0.95rem; letter-spacing:0.15em;
+    color:var(--maroon); margin-bottom:18px;
+    font-weight:500;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    line-height:1.05;
+    color:var(--maroon-deep);
+    transform-style:preserve-3d;
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--gold);
+    display:block;
+  }
+  .hero p.sub{
+    margin-top:22px; font-size:1.15rem; color:var(--ink-soft);
+    max-width:480px;
+  }
+
+  .hero-photo-wrap{
+    margin-top:48px;
+    width:230px; height:290px;
+    border-radius:6px;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform .15s ease-out;
+  }
+  .hero-photo-wrap .frame{
+    position:absolute; inset:-14px;
+    border:1.5px solid var(--gold);
+    border-radius:6px;
+    transform:translateZ(-30px);
+  }
+  .hero-photo-wrap img{
+    width:100%; height:100%; object-fit:cover;
+    border-radius:6px;
+    box-shadow:0 30px 60px -20px rgba(90,30,30,0.45);
+    transform:translateZ(10px);
+  }
+
+  .scroll-hint{
+    position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+    font-size:0.8rem; letter-spacing:0.1em; color:var(--ink-soft);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-hint .line{ width:1px; height:36px; background:var(--gold);
+    animation:scrolldown 1.8s ease-in-out infinite; }
+  @keyframes scrolldown{ 0%{transform:scaleY(0); transform-origin:top;} 50%{transform:scaleY(1); transform-origin:top;} 51%{transform-origin:bottom;} 100%{transform:scaleY(0); transform-origin:bottom;} }
+
+  /* ---------- section shell ---------- */
+  section{ position:relative; z-index:1; padding:110px 24px; }
+  .section-inner{ max-width:960px; margin:0 auto; }
+  .kicker{
+    text-align:center; color:var(--maroon);
+    font-size:0.95rem; letter-spacing:0.1em; margin-bottom:10px;
+  }
+  .section-title{
+    text-align:center; font-size:clamp(2rem,4vw,3rem);
+    color:var(--maroon-deep); margin-bottom:16px;
+  }
+  .section-lede{
+    text-align:center; max-width:600px; margin:0 auto 60px;
+    color:var(--ink-soft); font-size:1.05rem; line-height:1.7;
+  }
+
+  /* ---------- gallery: 3D tilt cards ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+    perspective:1400px;
+  }
+  .tilt-card{
+    position:relative;
+    border-radius:10px;
+    overflow:hidden;
+    aspect-ratio:3/4;
+    background:var(--cream-deep);
+    transform-style:preserve-3d;
+    transition:transform .12s ease-out, box-shadow .3s ease;
+    box-shadow:0 18px 34px -18px rgba(59,43,34,0.4);
+    cursor:pointer;
+  }
+  .tilt-card img{
+    width:100%; height:100%; object-fit:cover;
+    display:block;
+    transform:translateZ(20px) scale(1.02);
+    transition:transform .4s ease;
+  }
+  .tilt-card::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(59,43,34,0) 55%, rgba(59,43,34,0.55) 100%);
+  }
+  .tilt-card .cap{
+    position:absolute; left:16px; right:16px; bottom:14px; z-index:2;
+    color:var(--cream);
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; font-style:italic;
+    transform:translateZ(30px);
+  }
+  .tilt-card:hover{ box-shadow:0 26px 50px -18px rgba(59,43,34,0.55); }
+  @media (max-width:820px){
+    .gallery{ grid-template-columns:repeat(2,1fr); gap:18px; }
+  }
+  @media (max-width:520px){
+    .gallery{ grid-template-columns:1fr; max-width:320px; margin:0 auto; }
+  }
+
+  /* ---------- message letter ---------- */
+  .letter-wrap{
+    perspective:1600px;
+  }
+  .letter{
+    background:linear-gradient(180deg, #FFFDF8, var(--cream-deep));
+    border:1px solid rgba(199,154,75,0.4);
+    border-radius:4px;
+    padding:clamp(32px,6vw,64px);
+    box-shadow:0 40px 80px -30px rgba(90,30,30,0.3);
+    position:relative;
+    transform:rotateX(2deg);
+  }
+  .letter::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:6px;
+    background:linear-gradient(90deg, var(--maroon), var(--gold), var(--maroon));
+  }
+  .letter .to{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem; color:var(--maroon-deep); margin-bottom:22px;
+  }
+  .letter p{
+    font-size:1.08rem; line-height:1.95; color:var(--ink);
+    margin-bottom:20px;
+  }
+  .letter .sign{
+    margin-top:34px; text-align:right;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic; font-size:1.4rem; color:var(--maroon);
+  }
+
+  /* ---------- quote strip ---------- */
+  .quote-strip{
+    text-align:center;
+    padding:90px 24px;
+  }
+  .quote-strip blockquote{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:clamp(1.6rem,3.4vw,2.4rem);
+    color:var(--maroon-deep);
+    max-width:760px; margin:0 auto;
+    line-height:1.5;
+  }
+  .quote-strip .dash{
+    width:60px; height:1px; background:var(--gold);
+    margin:26px auto 0;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    text-align:center; padding:60px 24px 80px;
+    color:var(--ink-soft); font-size:0.95rem;
+  }
+  footer .heart{ color:var(--maroon); }
+
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div id="musicToggle" role="button" aria-label="Toggle music">
+  <div class="bars"><span></span><span></span><span></span></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">TEACHER'S DAY · 5 SEPTEMBER</div>
+  <h1>Happy Teacher's Day<em>Ma'am Sweta</em></h1>
+  <p class="sub">A small tribute to the woman who teaches, guides, and cares — all at once.</p>
+
+  <div class="hero-photo-wrap" id="tiltHero">
+    <div class="frame"></div>
+    <img src="images/photo6.jpg" alt="Prof. Sweta Agarwal">
+  </div>
+
+  <div class="scroll-hint"><span>SCROLL</span><span class="line"></span></div>
+</section>
+
+<!-- GALLERY -->
+<section>
+  <div class="section-inner">
+    <div class="kicker reveal">MOMENTS</div>
+    <h2 class="section-title reveal">A Few Frames With You</h2>
+    <p class="section-lede reveal">Every one of these is a memory I get to keep.</p>
+
+    <div class="gallery">
+      <div class="tilt-card reveal"><img src="images/photo1.jpeg" alt=""><div class="cap">Together, always</div></div>
+      <div class="tilt-card reveal"><img src="images/photo3.jpg" alt=""><div class="cap">Family, in every sense</div></div>
+      <div class="tilt-card reveal"><img src="images/photo5.jpg" alt=""><div class="cap">Grace and grit</div></div>
+      <div class="tilt-card reveal"><img src="images/photo2.jpg" alt=""><div class="cap">Warmth that never fades</div></div>
+      <div class="tilt-card reveal"><img src="images/photo4.jpg" alt=""><div class="cap">Always guiding</div></div>
+      <div class="tilt-card reveal"><img src="images/photo6.jpg" alt=""><div class="cap">The smile I know best</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-strip">
+  <blockquote class="reveal">"A good teacher can inspire hope, ignite the imagination, and instil a love of learning — you gave me all three, and a home besides."</blockquote>
+  <div class="dash reveal"></div>
+</section>
+
+<!-- LETTER -->
+<section>
+  <div class="section-inner letter-wrap">
+    <div class="kicker reveal">FOR YOU</div>
+    <h2 class="section-title reveal">A Letter, Written With Gratitude</h2>
+
+    <div class="letter reveal">
+      <div class="to">Dear Ma'am,</div>
+      <p>On Teacher's Day, most students thank a teacher for what she taught in the classroom. I want to thank you for everything you taught me outside of it - patience, discipline, and the quiet confidence that comes from knowing someone believes in you.</p>
+      <p>You work harder than anyone I know, and you never make it look like a burden. Whether it's your students or your own family, you show up fully, every single time. That's not something that can be taught in any syllabus  it's just who you are.</p>
+      <p>What makes you different is that you never treated me like just another student. You've guided me like a mother would guide her own son - checking in on my choices, correcting me when I needed it, and standing behind me when it mattered. And somehow, on top of all that, you've trusted me the way few people do.</p>
+      <p>I know how much you mean to your daughter, and now I understand it firsthand too. Thank you for every piece of advice about my career, every moment of patience, and every bit of trust you've placed in me. I don't take any of it for granted.</p>
+      <p>Happy Teacher's Day, Ma'am. I hope this small page says even a fraction of what I actually feel.</p>
+      <div class="sign">— With respect and gratitude, always</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Made with <span class="heart">♥</span> for Prof. Sweta Agarwal</div>
+</footer>
+
+<script>
+/* ---------------- Reveal on scroll ---------------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{ threshold:0.15 });
+revealEls.forEach(el=>io.observe(el));
+
+/* ---------------- Hero photo 3D tilt (mouse) ---------------- */
+const tiltHero = document.getElementById('tiltHero');
+document.querySelector('.hero').addEventListener('mousemove', (e)=>{
+  const rect = tiltHero.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const dx = (e.clientX - cx) / rect.width;
+  const dy = (e.clientY - cy) / rect.height;
+  tiltHero.style.transform = `rotateY(${dx*18}deg) rotateX(${-dy*18}deg)`;
+});
+document.querySelector('.hero').addEventListener('mouseleave', ()=>{
+  tiltHero.style.transform = 'rotateY(0deg) rotateX(0deg)';
+});
+
+/* ---------------- Gallery card tilt ---------------- */
+document.querySelectorAll('.tilt-card').forEach(card=>{
+  card.addEventListener('mousemove',(e)=>{
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left)/r.width - 0.5;
+    const y = (e.clientY - r.top)/r.height - 0.5;
+    card.style.transform = `rotateY(${x*16}deg) rotateX(${-y*16}deg) scale(1.03)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform = 'rotateY(0) rotateX(0) scale(1)';
+  });
+});
+
+/* ---------------- Floating golden particles (canvas) ---------------- */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w,h,particles;
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight * (document.body.scrollHeight / window.innerHeight);
+  canvas.style.height = document.body.scrollHeight + 'px';
+}
+function initParticles(){
+  const count = Math.floor((w*window.innerHeight)/28000);
+  particles = Array.from({length:count}, ()=>({
+    x: Math.random()*w,
+    y: Math.random()*h,
+    r: Math.random()*2.2+0.6,
+    speed: Math.random()*0.35+0.08,
+    drift: (Math.random()-0.5)*0.3,
+    alpha: Math.random()*0.5+0.15
+  }));
+}
+window.addEventListener('resize', ()=>{ resize(); initParticles(); });
+resize(); initParticles();
+
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  const scrollY = window.scrollY;
+  particles.forEach(p=>{
+    p.y -= p.speed;
+    p.x += p.drift;
+    if(p.y < -10){ p.y = h + 10; p.x = Math.random()*w; }
+    const visibleY = p.y - 0; // canvas already spans full doc height, fixed positioning handles scroll
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(199,154,75,${p.alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* canvas is fixed, so translate its drawing to counter scroll for a parallax feel */
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+
+/* ---------------- Ambient generated music (Web Audio API) ---------------- */
+let audioCtx, masterGain, isPlaying=false, padNodes=[];
+const toggle = document.getElementById('musicToggle');
+toggle.classList.add('paused');
+
+function startAmbientMusic(){
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0;
+  masterGain.connect(audioCtx.destination);
+
+  // gentle reverb-ish delay
+  const delay = audioCtx.createDelay();
+  delay.delayTime.value = 0.6;
+  const feedback = audioCtx.createGain();
+  feedback.gain.value = 0.35;
+  delay.connect(feedback);
+  feedback.connect(delay);
+  delay.connect(masterGain);
+
+  // warm pad chord progression (C major add9 feel)
+  const chords = [
+    [261.63, 329.63, 392.00, 440.00],   // C E G A
+    [246.94, 293.66, 369.99, 440.00],   // B D F#/Gb A
+    [220.00, 277.18, 329.63, 392.00],   // A C#/Db E G
+    [233.08, 293.66, 349.23, 440.00]    // Bb D F A
+  ];
+  let chordIndex = 0;
+
+  function playChord(freqs){
+    const now = audioCtx.currentTime;
+    freqs.forEach((f,i)=>{
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0, now);
+      g.gain.linearRampToValueAtTime(0.05, now + 2.5);
+      g.gain.linearRampToValueAtTime(0.0, now + 7.5);
+      osc.connect(g);
+      g.connect(masterGain);
+      g.connect(delay);
+      osc.start(now);
+      osc.stop(now + 8);
+      padNodes.push(osc);
+    });
+  }
+
+  function loop(){
+    if(!isPlaying) return;
+    playChord(chords[chordIndex % chords.length]);
+    chordIndex++;
+    setTimeout(loop, 6000);
+  }
+
+  masterGain.gain.linearRampToValueAtTime(0.6, audioCtx.currentTime + 1.5);
+  loop();
+}
+
+function stopAmbientMusic(){
+  if(masterGain){
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+  }
+  setTimeout(()=>{ if(audioCtx){ audioCtx.close(); audioCtx=null; } }, 1200);
+}
+
+toggle.addEventListener('click', ()=>{
+  isPlaying = !isPlaying;
+  toggle.classList.toggle('paused', !isPlaying);
+  if(isPlaying){ startAmbientMusic(); } else { stopAmbientMusic(); }
+});
+</script>
+
+</body>
+</html>
